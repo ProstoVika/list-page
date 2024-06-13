@@ -3,15 +3,15 @@ import {NameInterface} from './inter/interfaces';
 let filter = document.querySelector('.filter-box') as HTMLInputElement;
 let search = document.querySelector('.search-txt');
 let cardsContainer = document.querySelector('.cards-container');
-let resdata = [];
+let restdata = [];
 const url = 'https://restcountries.com/v2/';
 let dark = (localStorage.getItem('dark') == null) ? "off" : localStorage.getItem('dark');
 
 let data = async (restUrl: string): Promise<NameInterface> => {
     let answer = await fetch(`${url}${restUrl}`)
     try {
-        resdata = await answer.json();
-        return resdata[''];
+        restdata = await answer.json();
+        return restdata[''];
     } catch (error) {
         console.log('error:' + error)
     }
@@ -27,7 +27,7 @@ window.onload = async (): Promise<void> => {
         document.documentElement.style.setProperty('--Elements-color', 'var(--White)');
         document.documentElement.style.setProperty('--text-clr', 'var(--VeryDarkBlueT)');
     }
-    await data(filter.value).then(() => updateUi(resdata))
+    await data(filter.value).then(() => updateUi(restdata))
 }
 
 let updateUi = (data: NameInterface[]): void => {
@@ -55,7 +55,7 @@ const resetSearch = (): void => {
 
 filter.addEventListener('change', async (event): Promise<void> => {
     let value = (event.target as HTMLTextAreaElement).value;
-    await data(value).then(() => updateUi(resdata));
+    await data(value).then(() => updateUi(restdata));
     resetSearch();
 });
 
@@ -66,7 +66,7 @@ const resetFilter = (): void => {
 
 search.addEventListener('keyup', async (): Promise<void> => {
     let resturl = `name/${(search as HTMLTextAreaElement).value}`
-    await data(resturl).then(() => updateUi(resdata));
+    await data(resturl).then(() => updateUi(restdata));
     resetFilter();
 })
 
